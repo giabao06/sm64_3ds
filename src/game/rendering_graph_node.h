@@ -26,6 +26,6 @@ extern u16 gAreaUpdateCounter;
 #define ANIM_TYPE_ROTATION              5
 
 void geo_process_node_and_siblings(struct GraphNode *rootGraphNode);
-void geo_process_root();
+void set_cur_dynobj(struct GdObj *obj);
 
 #endif // RENDERING_GRAPH_NODE_H
