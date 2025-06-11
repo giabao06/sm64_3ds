@@ -1,5 +1,9 @@
-FROM ubuntu:18.04 as build
+FROM ubuntu:20.04 as build
 
+# prevent the timezone question
+ARG DEBIAN_FRONTEND=noninteractive
+
+# install the initial stuff
 RUN apt-get update && \
     apt-get install -y \
         binutils-mips-linux-gnu \
@@ -9,13 +13,22 @@ RUN apt-get update && \
         pkg-config \
         python3 \
         wget \
-        zlib1g-dev
+        zlib1g-dev \
+	curl
 
-RUN wget https://github.com/devkitPro/pacman/releases/download/v1.0.2/devkitpro-pacman.amd64.deb \
-  -O devkitpro.deb && \
-  echo ebc9f199da9a685e5264c87578efe29309d5d90f44f99f3dad9dcd96323fece3 devkitpro.deb | sha256sum --check && \
-  apt install -y ./devkitpro.deb && \
-  rm devkitpro.deb
+
+# install the devkitpro repo and dkp-pacman
+#
+# note that the install-devkitpro-pacman script will abort on the apt question;
+# we will ignore that exit code and install devkitpro-pacman in a separate cmd 
+
+RUN curl https://apt.devkitpro.org/install-devkitpro-pacman | bash || : 
+
+# fix the no /etc/mtab directory issue
+RUN ln -s /proc/self/mounts /etc/mtab
+
+RUN apt install devkitpro-pacman -y
+
 
 RUN dkp-pacman -Syu 3ds-dev --noconfirm
 
