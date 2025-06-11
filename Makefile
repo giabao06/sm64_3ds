@@ -441,12 +441,12 @@ OBJDUMP := objdump
 OBJCOPY := objcopy
 
 ifeq ($(TARGET_N3DS),1)
-  CPP := $(DEVKITARM)/bin/arm-none-eabi-cpp -P
+  CPP := $(DEVKITARM)/bin/arm-none-eabi-cpp -P -fpermissive
   OBJDUMP := $(DEVKITARM)/bin/arm-none-eabi-objdump
   OBJCOPY := $(DEVKITARM)/bin/arm-none-eabi-objcopy
   AS := $(DEVKITARM)/bin/arm-none-eabi-as
-  CC := $(DEVKITARM)/bin/arm-none-eabi-gcc
-  CXX := $(DEVKITARM)/bin/arm-none-eabi-g++
+  CC := $(DEVKITARM)/bin/arm-none-eabi-gcc -fpermissive
+  CXX := $(DEVKITARM)/bin/arm-none-eabi-g++ -fpermissive
   LD := $(CXX)
 endif
 
